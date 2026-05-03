@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Since i am not sure if i actually proposed</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@300;500&display=swap" rel="stylesheet">
+    <!-- Confetti Library -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    
+    <style>
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100dvh; /* Mobile Safari fix */
+            background: linear-gradient(135deg, #fce4ec 0%, #f8bbd0 100%);
+            font-family: 'Quicksand', sans-serif;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 2rem;
+            border-radius: 25px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            max-width: 400px;
+            width: 85%;
+            z-index: 10;
+            transition: all 0.5s ease;
+        }
+
+        h1 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.5rem;
+            color: #d81b60;
+            margin: 1rem 0;
+        }
+
+        p {
+            font-size: 1.1rem;
+            color: #555;
+            line-height: 1.5;
+            margin-bottom: 2rem;
+        }
+
+        .gif-container img {
+            width: 150px;
+            height: auto;
+            border-radius: 15px;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            height: 100px; /* Space for buttons to move */
+            position: relative;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: transform 0.1s ease;
+            touch-action: manipulation;
+        }
+
+        #yes-btn {
+            background-color: #4caf50;
+            color: white;
+            z-index: 2;
+        }
+
+        #no-btn {
+            background-color: #f44336;
+            color: white;
+            position: relative;
+            z-index: 1;
+        }
+
+        .success-message {
+            display: none;
+            animation: fadeIn 1s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .success-message h2 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 3rem;
+            color: #d81b60;
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container" id="main-card">
+        <div id="content">
+            <div class="gif-container">
+                <!-- Replace with your own gif URL if desired -->
+                <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHpueGZ3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1z/KztT2c4u8mYYUiMKdJ/giphy.gif" alt="Hearts">
+            </div>
+            <h1>Will you marry me?</h1>
+            <p>April, Distance has only shown me how much I want to spend the rest of my life by your side. You are the best thing that ever happened to me. You are my treasure.</p>
+            
+            <div class="buttons">
+                <button class="btn" id="yes-btn" onclick="celebrate()">Yes</button>
+                <button class="btn" id="no-btn">No</button>
+            </div>
+        </div>
+
+        <div class="success-message" id="success">
+            <div class="gif-container">
+                <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHpueGZ3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3bmZ3JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1z/T86p6H0HhQ5fK/giphy.gif" alt="Celebration">
+            </div>
+            <h2>Haha, ofc you had to say Yes!</h2>
+            <p>I love you to the moon and back April. I cant imagine my life without you.</p>
+        </div>
+    </div>
+
+    <script>
+        const noBtn = document.getElementById('no-btn');
+        const yesBtn = document.getElementById('yes-btn');
+        const mainCard = document.getElementById('main-card');
+        let yesScale = 1;
+
+        // Function to move the "No" button
+        const moveNoButton = (e) => {
+            // Prevent accidental click on mobile
+            if(e.type === 'touchstart') e.preventDefault();
+
+            // Calculate random positions within the visible screen
+            // Subtracting button size so it doesn't go off edge
+            const maxX = window.innerWidth - noBtn.offsetWidth - 20;
+            const maxY = window.innerHeight - noBtn.offsetHeight - 20;
+            
+            const randomX = Math.floor(Math.random() * maxX);
+            const randomY = Math.floor(Math.random() * maxY);
+            
+            noBtn.style.position = 'fixed';
+            noBtn.style.left = `${randomX}px`;
+            noBtn.style.top = `${randomY}px`;
+
+            // Make the "Yes" button harder to miss
+            yesScale += 0.15;
+            yesBtn.style.transform = `scale(${yesScale})`;
+        };
+
+        // Event listeners for both Desktop (hover) and Mobile (touch)
+        noBtn.addEventListener('mouseover', moveNoButton);
+        noBtn.addEventListener('touchstart', moveNoButton);
+
+        function celebrate() {
+            // UI Changes
+            document.getElementById('content').style.display = 'none';
+            document.getElementById('success').style.display = 'block';
+            mainCard.style.backgroundColor = 'white';
+
+            // Continuous Confetti Launch
+            const end = Date.now() + (15 * 1000);
+            const colors = ['#d81b60', '#f48fb1', '#4caf50'];
+
+            (function frame() {
+                confetti({
+                    particleCount: 3,
+                    angle: 60,
+                    spread: 55,
+                    origin: { x: 0 },
+                    colors: colors
+                });
+                confetti({
+                    particleCount: 3,
+                    angle: 120,
+                    spread: 55,
+                    origin: { x: 1 },
+                    colors: colors
+                });
+
+                if (Date.now() < end) {
+                    requestAnimationFrame(frame);
+                }
+            }());
+        }
+    </script>
+</body>
+</html>
